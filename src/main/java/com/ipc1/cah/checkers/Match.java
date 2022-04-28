@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import com.ipc1.cah.ui.ImageRoutes;
 import com.ipc1.cah.ui.checkers.*;
+import com.ipc1.cah.ui.checkers.square_buttons.SquareButton;
 import com.ipc1.cah.utilities.GenerateRandom;
 
 public class Match {
@@ -40,8 +41,8 @@ public class Match {
 
         checkersFrame = new CheckersFrame(board);
     }
-    
-    public void selectToken(Square square){
+
+    public void selectSquare(Square square){
         if (selectedSquare1 == null) { 
             selectedSquare1 = square; 
         } else{
@@ -58,11 +59,15 @@ public class Match {
     }
     
     public void moveToken() {
-        JButton tmp = selectedSquare1.getBttnSelect();
+        selectedSquare1.getBttnSelect().setSquareContainer(selectedSquare2);
+        selectedSquare2.getBttnSelect().setSquareContainer(selectedSquare1);
+        SquareButton tmp = selectedSquare1.getBttnSelect();
+        selectedSquare1.remove(selectedSquare1.getBttnSelect());
         selectedSquare1.setBttnSelect(selectedSquare2.getBttnSelect());
+        selectedSquare2.remove(selectedSquare2.getBttnSelect());
         selectedSquare2.setBttnSelect(tmp); 
         this.board.repaint();
-        this.board.updateUI();        
+        //this.board.updateUI();        
     }
 
     

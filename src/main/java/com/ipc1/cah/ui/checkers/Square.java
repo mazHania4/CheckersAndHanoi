@@ -1,21 +1,19 @@
 package com.ipc1.cah.ui.checkers;
 
 import javax.swing.*;
-
-import com.ipc1.cah.checkers.Match;
-
 import java.awt.*;
-import java.awt.event.*;
+import com.ipc1.cah.checkers.Match;
+import com.ipc1.cah.ui.checkers.square_buttons.SquareButton;
 
 /**
  * Square
  */
-public class Square extends JPanel implements ActionListener{
+public class Square extends JPanel {
 
     public static final int SIZE = CheckersFrame.BOARD_SIZE/8;
 
     private String bgImageRoute;
-    private JButton bttnSelect;
+    private SquareButton bttnSelect;
     private Match match;
     private int posX;
     private int posY;
@@ -27,23 +25,8 @@ public class Square extends JPanel implements ActionListener{
         this.bgImageRoute = bgImageRoute;
         this.posX = posX;
         this.posY = posY;
-
-        bttnSelect = new JButton();
-        bttnSelect.setIcon( new ImageIcon(getClass().getResource(bttnImageRoute)) );   
-        bttnSelect.addActionListener(this);
-        bttnSelect.setSize(SIZE, SIZE);
-        bttnSelect.setOpaque(false);
-        bttnSelect.setContentAreaFilled(false);
-        bttnSelect.setBorderPainted(false);
-        add(bttnSelect); 
-
-    }
-    
-    public void actionPerformed(ActionEvent evt) {
-        this.match.selectToken(this);        
-        System.out.println("click sobre casilla " + getPosX() + " y: " + getPosY());
-        this.repaint();
-        updateUI();        
+        this.bttnSelect = new SquareButton(bttnImageRoute, this);
+        add(bttnSelect);
     }
     
     @Override
@@ -54,12 +37,14 @@ public class Square extends JPanel implements ActionListener{
         super.paintComponents(g);
     }
 
-    public JButton getBttnSelect() {
+    public SquareButton getBttnSelect() {
         return this.bttnSelect;
     }
 
-    public void setBttnSelect(JButton bttnSelect) {
+    public void setBttnSelect(SquareButton bttnSelect) {
+
         this.bttnSelect = bttnSelect;
+        this.add(bttnSelect);
     }
 
     public int getPosX() {
@@ -76,6 +61,10 @@ public class Square extends JPanel implements ActionListener{
 
     public void setPosY(int posY) {
         this.posY = posY;
+    }
+
+    public Match getMatch() {
+        return match;
     }
 
     
