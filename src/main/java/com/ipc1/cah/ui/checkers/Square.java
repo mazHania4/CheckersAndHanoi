@@ -1,6 +1,9 @@
 package com.ipc1.cah.ui.checkers;
 
 import javax.swing.*;
+
+import com.ipc1.cah.checkers.Match;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -13,14 +16,14 @@ public class Square extends JPanel implements ActionListener{
 
     private String bgImageRoute;
     private JButton bttnSelect;
-    private JPanel pnlContainer;
+    private Match match;
     private int posX;
     private int posY;
 
 
-    public Square(String bgImageRoute, String bttnImageRoute, JPanel plnContainer, int posX, int posY){
+    public Square(String bgImageRoute, String bttnImageRoute, Match match, int posX, int posY){
         this.setLayout(null);
-        this.pnlContainer = plnContainer;
+        this.match = match;
         this.bgImageRoute = bgImageRoute;
         this.posX = posX;
         this.posY = posY;
@@ -36,6 +39,13 @@ public class Square extends JPanel implements ActionListener{
 
     }
     
+    public void actionPerformed(ActionEvent evt) {
+        this.match.selectToken(this);        
+        System.out.println("click sobre casilla " + getPosX() + " y: " + getPosY());
+        this.repaint();
+        updateUI();        
+    }
+    
     @Override
     public void paint(Graphics g){
         ImageIcon bgImage = new ImageIcon(getClass().getResource(bgImageRoute));
@@ -44,20 +54,12 @@ public class Square extends JPanel implements ActionListener{
         super.paintComponents(g);
     }
 
-    public void actionPerformed(ActionEvent evt) {
-        System.out.println("click sobre casilla " + getPosX() + " y: " + getPosY());
-    }
-
     public JButton getBttnSelect() {
         return this.bttnSelect;
     }
 
     public void setBttnSelect(JButton bttnSelect) {
         this.bttnSelect = bttnSelect;
-    }
-
-    public JPanel getPnlContainer() {
-        return pnlContainer;
     }
 
     public int getPosX() {

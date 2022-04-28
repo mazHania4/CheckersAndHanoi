@@ -9,10 +9,10 @@ public class GenerateRandom {
        return randomInt;
    }
 
-    public static String randomColorTokenRoute(){
+    public static String colorTokenRoute(){
         String answer = "";
-        switch (randomInteger(1, 11)) {
-            case 1: answer = ImageRoutes.BLACK_TOKEN; break;
+        switch (randomInteger(1, 9)) {
+            case 1: answer = ImageRoutes.RED_TOKEN; break;
             case 2: answer = ImageRoutes.BLUE_TOKEN; break;
             case 3: answer = ImageRoutes.CYAN_TOKEN; break;
             case 4: answer = ImageRoutes.GREEN_TOKEN; break;
@@ -20,11 +20,17 @@ public class GenerateRandom {
             case 6: answer = ImageRoutes.ORANGE_TOKEN; break;
             case 7: answer = ImageRoutes.PINK_TOKEN; break;
             case 8: answer = ImageRoutes.PURPLE_TOKEN; break;
-            case 9: answer = ImageRoutes.RED_TOKEN; break;
-            case 10: answer = ImageRoutes.WHITE_TOKEN; break;
-            case 11: answer = ImageRoutes.YELLOW_TOKEN; break;
+            case 9: answer = ImageRoutes.YELLOW_TOKEN; break;
         }
         return answer;
     }
-    
+    public static String colorTokenRoute(String colorToAvoid){
+        String answer = "";
+        boolean isTheSame = false;
+        do {
+            answer = colorTokenRoute();
+            if (answer.equals(colorToAvoid)) { isTheSame = true; }
+        } while (isTheSame);
+        return answer;
+    }
 }
