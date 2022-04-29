@@ -3,7 +3,8 @@ package com.ipc1.cah.ui.checkers;
 import javax.swing.*;
 import java.awt.*;
 import com.ipc1.cah.checkers.Match;
-import com.ipc1.cah.ui.checkers.square_buttons.SquareButton;
+import com.ipc1.cah.ui.ImageRoutes;
+import com.ipc1.cah.ui.checkers.square_buttons.*;
 
 /**
  * Square
@@ -18,8 +19,21 @@ public class Square extends JPanel {
     private int posX;
     private int posY;
 
+    public Square(boolean isDarkSquare, boolean hasToken, Match match, int posX, int posY){
+        this.setLayout(null);
+        this.match = match;
+        this.bgImageRoute = isDarkSquare ? ImageRoutes.DARK_SQUARE : ImageRoutes.LIGHT_SQUARE;
+        this.posX = posX;
+        this.posY = posY;
+        if (hasToken) {
+            this.bttnSelect = new Token(this);
+        } else {
+            this.bttnSelect = new Empty(this);
+        }
+        add(bttnSelect);
+    }
 
-    public Square(String bgImageRoute, String bttnImageRoute, Match match, int posX, int posY){
+    /*public Square(String bgImageRoute, String bttnImageRoute, Match match, int posX, int posY){
         this.setLayout(null);
         this.match = match;
         this.bgImageRoute = bgImageRoute;
@@ -27,7 +41,7 @@ public class Square extends JPanel {
         this.posY = posY;
         this.bttnSelect = new SquareButton(bttnImageRoute, this);
         add(bttnSelect);
-    }
+    }*/
     
     @Override
     public void paint(Graphics g){

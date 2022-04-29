@@ -25,7 +25,7 @@ public interface ImageRoutes {
     String YELLOW_TOKEN = TOKENS_HOME + "yellow" + EXTENSION;
 
     String SQUARES_HOME = IMAGES_HOME + "checkers/squares/";
-    String LIGHT_SQUARE = SQUARES_HOME + "dark" + EXTENSION;
-    String DARK_SQUARE = SQUARES_HOME +"light"+ EXTENSION;
+    String LIGHT_SQUARE = SQUARES_HOME + "light" + EXTENSION;
+    String DARK_SQUARE = SQUARES_HOME +"dark"+ EXTENSION;
     
 }

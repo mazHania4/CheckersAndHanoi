@@ -3,6 +3,7 @@ package com.ipc1.cah.ui.hanoi_towers;
 import javax.swing.*;
 
 import com.ipc1.cah.ui.*;
+import com.ipc1.cah.ui.utilities.BGPanel;
 
 public class HanoiTowersFrame extends JFrame{
 

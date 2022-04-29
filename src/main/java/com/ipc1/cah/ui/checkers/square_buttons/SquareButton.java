@@ -4,15 +4,14 @@ import javax.swing.*;
 import java.awt.event.*;
 import com.ipc1.cah.ui.checkers.Square;
 
-public class SquareButton extends JButton implements ActionListener{
+public abstract class SquareButton extends JButton implements ActionListener{
 
     private Square squareContainer;
 
-    public SquareButton(String bttnImageRoute, Square squareContainer){
+    public SquareButton(Square squareContainer){
 
         this.squareContainer = squareContainer;
         
-        setIcon( new ImageIcon(getClass().getResource(bttnImageRoute)) );   
         setSize(Square.SIZE, Square.SIZE);
         setOpaque(false);
         setContentAreaFilled(false);

@@ -4,12 +4,13 @@ import java.awt.Color;
 import java.awt.event.*;
 import javax.swing.*;
 import com.ipc1.cah.ui.*;
+import com.ipc1.cah.ui.utilities.BGPanel;
 
 public class CheckersFrame extends JFrame implements ActionListener{
 
     public static final int BOARD_SIZE = 400;
-    private JLabel bttnTurnIndicator1;
-    private JLabel bttnTurnIndicator2;
+    private JLabel lblTurnIndicator1;
+    private JLabel lblTurnIndicator2;
 
     public CheckersFrame(JPanel checkersBoard){
 
@@ -29,28 +30,32 @@ public class CheckersFrame extends JFrame implements ActionListener{
 		checkersBoard.setLocation(cBoardX, cBoardY);
         add(checkersBoard);
         
-        bttnTurnIndicator1 = new JLabel();
-        bttnTurnIndicator1.setBounds(600, 20, 35, 35);
-        bttnTurnIndicator1.setOpaque(true);
-        add(bttnTurnIndicator1);
+        lblTurnIndicator1 = new JLabel();
+        lblTurnIndicator1.setBounds(600, 20, 35, 35);
+        lblTurnIndicator1.setOpaque(true);
+        lblTurnIndicator1.setBackground(Color.GREEN); 
+        add(lblTurnIndicator1);
 
-        bttnTurnIndicator2 = new JLabel();
-        bttnTurnIndicator2.setBounds(262, 20, 35, 35);
-        bttnTurnIndicator2.setOpaque(true);
-        add(bttnTurnIndicator2);
-
-        setTurn(true);
+        lblTurnIndicator2 = new JLabel();
+        lblTurnIndicator2.setBounds(262, 20, 35, 35);
+        lblTurnIndicator2.setOpaque(true);
+        lblTurnIndicator2.setBackground(Color.RED); 
+        add(lblTurnIndicator2);
         
         this.setVisible(true);
-    }
-    
-    public void setTurn(boolean isPlayer1Turn){
-        bttnTurnIndicator1.setBackground(Color.GREEN); 
-        bttnTurnIndicator2.setBackground(Color.RED); 
     }
 
     public void actionPerformed(ActionEvent evt) {
         
+
+    }
+
+    public JLabel getLblTurnIndicator1() {
+        return lblTurnIndicator1;
+    }
+
+    public JLabel getLblTurnIndicator2() {
+        return lblTurnIndicator2;
     }
     
 }

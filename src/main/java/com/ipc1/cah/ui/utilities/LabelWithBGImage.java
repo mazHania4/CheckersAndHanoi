@@ -1,4 +1,4 @@
-package com.ipc1.cah.ui;
+package com.ipc1.cah.ui.utilities;
 
 import java.awt.*;
 import javax.swing.*;

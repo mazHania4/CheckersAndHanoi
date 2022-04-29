@@ -1,6 +1,9 @@
 package com.ipc1.cah.ui;
 
 import javax.swing.*;
+
+import com.ipc1.cah.ui.utilities.BGPanel;
+
 import java.awt.event.*;
 
 public class MainWindow extends JFrame implements ActionListener{
