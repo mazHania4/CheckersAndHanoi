@@ -26,6 +26,11 @@ public class Match {
 
     public Match(){
 
+        //jugadores provisionales, pendiente
+        this.player1 = new Player("Pepe");
+        this.player2 = new Player("Oni");
+        this.isPlayer1Turn = true;
+
         squares = new Square[BOARD_SIZE][BOARD_SIZE];
         player1ColorTokenRoute = GenerateRandom.colorTokenRoute();
         player2ColorTokenRoute = GenerateRandom.colorTokenRoute(player1ColorTokenRoute);
@@ -38,7 +43,7 @@ public class Match {
                 boolean isDarkSquare = (i+j)%2 == 0;
                 boolean hasToken = isDarkSquare && (j<3 || j>4);
                 Square tmp = new Square(isDarkSquare, hasToken, this, j, i );
-                squares[i][j] = tmp;
+                squares[j][i] = tmp;
                 board.add(tmp);
                 /*String bgImageRoute = ((i+j)%2 != 0) ? ImageRoutes.DARK_SQUARE : ImageRoutes.LIGHT_SQUARE;
                 String bttnImageRoute = (j<3)   ? ( ((i+j)%2 == 0) ? player1ColorTokenRoute: "" ) 
@@ -53,30 +58,74 @@ public class Match {
 
     public void selectSquare(Square square){
         if (selectedSquare1 == null) { 
-            selectedSquare1 = square; 
+            verifyAddFirstSelectedSquare(square);
         } else{
             if (selectedSquare2 == null) { 
-                selectedSquare2 = square; 
-                moveTokenIfPossible();
-                selectedSquare1 = null;
-                selectedSquare2 = null;
+                verifyAddSecondSelectedSquare(square);
             }   
         }  
     }
 
-    public void moveTokenIfPossible(){
-        //int posX1 = selectedSquare1.getPosX();
-        //int posY1 = selectedSquare1.getPosY();
-        int posX2 = selectedSquare2.getPosX();
-        int posY2 = selectedSquare2.getPosY();
-        boolean squareToIsDark = ((posX2+posY2)%2 == 0) ? true : false;
-        if (squareToIsDark) {
-            moveToken();
-            changeTurn();
-        } else {
-            System.out.println("no es posible");           
-            showWrongMoveBlinking();
+    public void verifyAddFirstSelectedSquare(Square square){
+        if (square.getBttnSelect() instanceof Token) {
+            if (((Token)square.getBttnSelect()).getPlayer().equals(isPlayer1Turn ? player1 : player2)) {
+                if (possibleMoveExists(square)) {
+                    selectedSquare1 = square; 
+                    showCorrectSelection();
+                } else { showWrongSelection("No hay movimiento posible para esa ficha"); }
+            } else { showWrongSelection("Elija una de sus fichas"); }
+        } else { showWrongSelection("Elija primero una ficha a mover"); } 
+    }
+
+    public void verifyAddSecondSelectedSquare(Square square){
+        if (square.getBttnSelect() instanceof Empty) {
+            if (  ( (square.getPosX() + square.getPosY()) % 2 ) == 0  ) {
+                selectedSquare2 = square; 
+                moveToken();
+                changeTurn();
+            } else { showWrongSelection("Elija una casilla oscura"); }
+        } else { showWrongSelection("Elija una casilla vacia"); }
+    }
+
+    public boolean isAPossibleMove(int posXTo, int posYTo){
+        boolean answer = false;
+        System.out.println("re: x-" + posXTo+ " y-" +posYTo);
+        if ( (posYTo>0)&&(posYTo<squares.length) && (posXTo>0)&&(posXTo<squares.length) ) {
+            answer = squares[posXTo][posYTo].getBttnSelect() instanceof Empty; 
         }
+        System.out.println("verif1: " + answer);
+        return answer;
+    }
+
+    public boolean isAPossibleMove(int posXTo, int posYTo, boolean isAscendantX, boolean isAscendantY){
+        boolean answer = false;
+        if ( (posYTo>0)&&(posYTo<squares.length) && (posXTo>0)&&(posXTo<squares.length) ) {
+            int posXBtw = isAscendantX ? posXTo-1 : posXTo+1;
+            int posYBtw = isAscendantY ? posYTo-1 : posYTo+1;
+            if ((squares[posXBtw][posYBtw].getBttnSelect() instanceof Token)) {
+                answer = (squares[posXTo][posYTo].getBttnSelect() instanceof Empty) && 
+                (((Token)(squares[posXBtw][posYBtw].getBttnSelect())).getPlayer().equals(isPlayer1Turn ? player2 : player1)) ;
+            }
+            //if (radius == 2) { answer = ((squares[posX][posY].getBttnSelect() instanceof Empty)&&(squares[posX][posY].getBttnSelect() instanceof Token)); }
+        }
+        System.out.println(answer);
+        return answer;
+    }
+
+    public boolean possibleMoveExists(Square square){
+        int posX = square.getPosX();
+        int posY = square.getPosY();
+        System.out.println("posO: x-" + posX + " y-" + posY);
+        boolean isPossible1 =   (isAPossibleMove(posX-1, posY-1)) ||
+                                (isAPossibleMove(posX-1, posY+1)) ||
+                                (isAPossibleMove(posX+1, posY-1)) ||
+                                (isAPossibleMove(posX+1, posY+1)) ;
+        boolean isPossible2 =   (isAPossibleMove(posX+2, posY+2, true, true)) ||
+                                (isAPossibleMove(posX+2, posY-2, true, false)) ||
+                                (isAPossibleMove(posX-2, posY+2, false, true)) ||
+                                (isAPossibleMove(posX-2, posY-2, false, false)) ;
+        System.out.println("1: "+isPossible1 + " 2: "+ isPossible2);
+        return (isPossible1 || isPossible2);
     }
     
     public void moveToken() {
@@ -91,15 +140,28 @@ public class Match {
         //this.board.updateUI();        
     }
 
-    public void changeTurn(){
+    public void changeTurn(){ 
+        this.isPlayer1Turn = !isPlayer1Turn;
         checkersFrame.getLblTurnIndicator1().setBackground(this.isPlayer1Turn ? Color.GREEN : Color.RED); 
         checkersFrame.getLblTurnIndicator2().setBackground(this.isPlayer1Turn ? Color.RED : Color.GREEN); 
-        this.isPlayer1Turn = !isPlayer1Turn;
+        checkersFrame.getLblWrongMoveDescripion().setText(("CAMBIA EL TURNO ( " + (isPlayer1Turn ? "-->" : "<--") + " )"));
+        selectedSquare1 = null;
+        selectedSquare2 = null;
     }
 
-    public void showWrongMoveBlinking(){   
+    public void showWrongSelection(String description){
+        showWrongMoveBlinking(Color.ORANGE);
+        checkersFrame.getLblWrongMoveDescripion().setText(description);
+    }
+
+    public void showCorrectSelection(){
+        showWrongMoveBlinking(Color.CYAN);
+        checkersFrame.getLblWrongMoveDescripion().setText("Seleccion correcta");
+    }
+
+    public void showWrongMoveBlinking(Color color){   
         JLabel lblToBlink = this.isPlayer1Turn ? checkersFrame.getLblTurnIndicator1(): checkersFrame.getLblTurnIndicator2();
-        BlinkJLabel.blinkJLabel(lblToBlink, Color.ORANGE, Color.GREEN, 1);
+        BlinkJLabel.blinkJLabel(lblToBlink, color, Color.GREEN, 1);
     }
 
     public String getPlayer1ColorTokenRoute() {

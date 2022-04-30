@@ -11,7 +11,7 @@ public class Token extends SquareButton{
 
     public Token(Square squareContainer){
         super(squareContainer);
-        if (this.getSquareContainer().getPosX()<3) {
+        if (this.getSquareContainer().getPosX()>4) {
             this.player = squareContainer.getMatch().getPlayer1();
             setIcon( new ImageIcon(getClass().getResource( squareContainer.getMatch().getPlayer1ColorTokenRoute() )) );   
         } else {

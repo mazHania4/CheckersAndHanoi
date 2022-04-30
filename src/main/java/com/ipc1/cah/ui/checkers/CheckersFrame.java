@@ -11,6 +11,7 @@ public class CheckersFrame extends JFrame implements ActionListener{
     public static final int BOARD_SIZE = 400;
     private JLabel lblTurnIndicator1;
     private JLabel lblTurnIndicator2;
+    private JLabel lblWrongMoveDescripion;
 
     public CheckersFrame(JPanel checkersBoard){
 
@@ -41,6 +42,14 @@ public class CheckersFrame extends JFrame implements ActionListener{
         lblTurnIndicator2.setOpaque(true);
         lblTurnIndicator2.setBackground(Color.RED); 
         add(lblTurnIndicator2);
+
+        lblWrongMoveDescripion = new JLabel();
+        lblWrongMoveDescripion.setBounds(325, 20, 250, 35);
+        lblWrongMoveDescripion.setOpaque(true);
+        lblWrongMoveDescripion.setBackground(Color.LIGHT_GRAY); 
+        lblWrongMoveDescripion.setHorizontalAlignment(SwingConstants.CENTER);
+        lblWrongMoveDescripion.setText("INICIA TURNO ( --> )");
+        add(lblWrongMoveDescripion);
         
         this.setVisible(true);
     }
@@ -57,5 +66,9 @@ public class CheckersFrame extends JFrame implements ActionListener{
     public JLabel getLblTurnIndicator2() {
         return lblTurnIndicator2;
     }
-    
+
+    public JLabel getLblWrongMoveDescripion() {
+        return lblWrongMoveDescripion;
+    }
+
 }
