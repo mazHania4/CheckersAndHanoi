@@ -7,6 +7,7 @@ import com.ipc1.cah.players.*;
 //import com.ipc1.cah.ui.ImageRoutes;
 import com.ipc1.cah.ui.checkers.*;
 import com.ipc1.cah.ui.checkers.square_buttons.*;
+import com.ipc1.cah.ui.utilities.ChangeBGCLabel;
 import com.ipc1.cah.utilities.GenerateRandom;
 
 public class Match {
@@ -67,7 +68,7 @@ public class Match {
     }
 
     public void verifyAddFirstSelectedSquare(Square square){
-        if (square.getBttnSelect() instanceof Token) {
+        if (!(square.getBttnSelect() instanceof Empty)) {
             if (((Token)square.getBttnSelect()).getPlayer().equals(isPlayer1Turn ? player1 : player2)) {
                 if (possibleMoveExists(square)) {
                     selectedSquare1 = square; 
@@ -80,42 +81,50 @@ public class Match {
     public void verifyAddSecondSelectedSquare(Square square){
         if (square.getBttnSelect() instanceof Empty) {
             if (  ( (square.getPosX() + square.getPosY()) % 2 ) == 0  ) {
-                selectedSquare2 = square; 
-                moveToken();
-                changeTurn();
+                if ((square.getPosX() == selectedSquare1.getPosX()+1)||(square.getPosX() == selectedSquare1.getPosX()-1)) {
+                    selectedSquare2 = square; 
+                    moveToken();
+                    changeTurn();
+                } else {
+                    if ((square.getPosX() == selectedSquare1.getPosX()+2)||(square.getPosX() == selectedSquare1.getPosX()-2)) {
+                        boolean isAscendantX = (square.getPosX() == selectedSquare1.getPosX()+2);
+                        boolean isAscendantY = (square.getPosY() == selectedSquare1.getPosY()+2);
+                        if (isAPossibleMove(square.getPosX(), square.getPosY(), isAscendantX, isAscendantY)) {
+                            selectedSquare2 = square; 
+                            eatToken(isAscendantX, isAscendantY);
+                            moveToken();
+                            changeTurn();
+                        } else {showWrongSelection("Puede moverse 2 casillas solo al comer");}
+                    } else { showWrongSelection("Puede moverse hasta 2 casillas alrededor"); }
+                }
             } else { showWrongSelection("Elija una casilla oscura"); }
         } else { showWrongSelection("Elija una casilla vacia"); }
     }
 
     public boolean isAPossibleMove(int posXTo, int posYTo){
         boolean answer = false;
-        System.out.println("re: x-" + posXTo+ " y-" +posYTo);
         if ( (posYTo>0)&&(posYTo<squares.length) && (posXTo>0)&&(posXTo<squares.length) ) {
             answer = squares[posXTo][posYTo].getBttnSelect() instanceof Empty; 
         }
-        System.out.println("verif1: " + answer);
         return answer;
     }
 
     public boolean isAPossibleMove(int posXTo, int posYTo, boolean isAscendantX, boolean isAscendantY){
         boolean answer = false;
-        if ( (posYTo>0)&&(posYTo<squares.length) && (posXTo>0)&&(posXTo<squares.length) ) {
+        if ( (posYTo>=0)&&(posYTo<squares.length) && (posXTo>=0)&&(posXTo<squares.length) ) {
             int posXBtw = isAscendantX ? posXTo-1 : posXTo+1;
             int posYBtw = isAscendantY ? posYTo-1 : posYTo+1;
             if ((squares[posXBtw][posYBtw].getBttnSelect() instanceof Token)) {
                 answer = (squares[posXTo][posYTo].getBttnSelect() instanceof Empty) && 
                 (((Token)(squares[posXBtw][posYBtw].getBttnSelect())).getPlayer().equals(isPlayer1Turn ? player2 : player1)) ;
             }
-            //if (radius == 2) { answer = ((squares[posX][posY].getBttnSelect() instanceof Empty)&&(squares[posX][posY].getBttnSelect() instanceof Token)); }
         }
-        System.out.println(answer);
         return answer;
     }
 
     public boolean possibleMoveExists(Square square){
         int posX = square.getPosX();
         int posY = square.getPosY();
-        System.out.println("posO: x-" + posX + " y-" + posY);
         boolean isPossible1 =   (isAPossibleMove(posX-1, posY-1)) ||
                                 (isAPossibleMove(posX-1, posY+1)) ||
                                 (isAPossibleMove(posX+1, posY-1)) ||
@@ -124,7 +133,6 @@ public class Match {
                                 (isAPossibleMove(posX+2, posY-2, true, false)) ||
                                 (isAPossibleMove(posX-2, posY+2, false, true)) ||
                                 (isAPossibleMove(posX-2, posY-2, false, false)) ;
-        System.out.println("1: "+isPossible1 + " 2: "+ isPossible2);
         return (isPossible1 || isPossible2);
     }
     
@@ -132,21 +140,30 @@ public class Match {
         selectedSquare1.getBttnSelect().setSquareContainer(selectedSquare2);
         selectedSquare2.getBttnSelect().setSquareContainer(selectedSquare1);
         SquareButton tmp = selectedSquare1.getBttnSelect();
-        selectedSquare1.remove(selectedSquare1.getBttnSelect());
         selectedSquare1.setBttnSelect(selectedSquare2.getBttnSelect());
-        selectedSquare2.remove(selectedSquare2.getBttnSelect());
-        selectedSquare2.setBttnSelect(tmp); 
+        selectedSquare2.setBttnSelect(tmp);         
         this.board.repaint();
         //this.board.updateUI();        
     }
 
+    public void eatToken(boolean isAscendantX, boolean isAscendantY){
+        int posXBtw = isAscendantX ? selectedSquare2.getPosX()-1 : selectedSquare2.getPosX()+1;
+        int posYBtw = isAscendantY ? selectedSquare2.getPosY()-1 : selectedSquare2.getPosY()+1;
+        squares[posXBtw][posYBtw].setBttnSelect(new Empty(squares[posXBtw][posYBtw]));
+        this.board.repaint();
+        
+    }
+
     public void changeTurn(){ 
         this.isPlayer1Turn = !isPlayer1Turn;
-        checkersFrame.getLblTurnIndicator1().setBackground(this.isPlayer1Turn ? Color.GREEN : Color.RED); 
-        checkersFrame.getLblTurnIndicator2().setBackground(this.isPlayer1Turn ? Color.RED : Color.GREEN); 
+        ChangeBGCLabel.changeBGColorJLabel(checkersFrame.getLblTurnIndicator1(), (this.isPlayer1Turn ? Color.GREEN : Color.RED));
+        ChangeBGCLabel.changeBGColorJLabel(checkersFrame.getLblTurnIndicator2(), (this.isPlayer1Turn ? Color.RED : Color.GREEN));
+        //checkersFrame.getLblTurnIndicator1().setBackground(this.isPlayer1Turn ? Color.GREEN : Color.RED); 
+        //checkersFrame.getLblTurnIndicator2().setBackground(this.isPlayer1Turn ? Color.RED : Color.GREEN); 
         checkersFrame.getLblWrongMoveDescripion().setText(("CAMBIA EL TURNO ( " + (isPlayer1Turn ? "-->" : "<--") + " )"));
         selectedSquare1 = null;
         selectedSquare2 = null;
+        System.out.println("ya cambio el turno");
     }
 
     public void showWrongSelection(String description){
@@ -155,13 +172,15 @@ public class Match {
     }
 
     public void showCorrectSelection(){
+        System.out.println("llamada correcta:");
         showWrongMoveBlinking(Color.CYAN);
         checkersFrame.getLblWrongMoveDescripion().setText("Seleccion correcta");
     }
 
     public void showWrongMoveBlinking(Color color){   
         JLabel lblToBlink = this.isPlayer1Turn ? checkersFrame.getLblTurnIndicator1(): checkersFrame.getLblTurnIndicator2();
-        BlinkJLabel.blinkJLabel(lblToBlink, color, Color.GREEN, 1);
+        ChangeBGCLabel.blinkJLabel(lblToBlink, color, Color.GREEN, 1);
+        System.out.println("desde metodo parpadear en Match");
     }
 
     public String getPlayer1ColorTokenRoute() {

@@ -56,7 +56,7 @@ public class Square extends JPanel {
     }
 
     public void setBttnSelect(SquareButton bttnSelect) {
-
+        this.remove(this.bttnSelect);
         this.bttnSelect = bttnSelect;
         this.add(bttnSelect);
     }
