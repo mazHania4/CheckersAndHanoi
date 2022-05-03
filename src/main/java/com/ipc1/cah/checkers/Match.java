@@ -27,7 +27,7 @@ public class Match {
 
     public Match(){
 
-        //jugadores provisionales, pendiente
+        //jugadores provisionales, pendiente establecer correctamente
         this.player1 = new Player("Pepe");
         this.player2 = new Player("Oni");
         this.isPlayer1Turn = true;
@@ -46,12 +46,6 @@ public class Match {
                 Square tmp = new Square(isDarkSquare, hasToken, this, j, i );
                 squares[j][i] = tmp;
                 board.add(tmp);
-                /*String bgImageRoute = ((i+j)%2 != 0) ? ImageRoutes.DARK_SQUARE : ImageRoutes.LIGHT_SQUARE;
-                String bttnImageRoute = (j<3)   ? ( ((i+j)%2 == 0) ? player1ColorTokenRoute: "" ) 
-                                                : (  (j>4) ? ( ((i+j)%2 == 0) ? player2ColorTokenRoute: "" ) : ""  ) ;
-                Square tmp = new Square(bgImageRoute, bttnImageRoute, this, j, i );
-                squares[i][j] = tmp;
-                board.add(tmp);*/
             }
         }
         checkersFrame = new CheckersFrame(board);
@@ -70,7 +64,7 @@ public class Match {
     public void verifyAddFirstSelectedSquare(Square square){
         if (!(square.getBttnSelect() instanceof Empty)) {
             if (((Token)square.getBttnSelect()).getPlayer().equals(isPlayer1Turn ? player1 : player2)) {
-                if (possibleMoveExists(square)) {
+                if (  possibleMoveExists( square, (square.getBttnSelect() instanceof Queen) )  ) {
                     selectedSquare1 = square; 
                     showCorrectSelection();
                 } else { showWrongSelection("No hay movimiento posible para esa ficha"); }
@@ -79,26 +73,47 @@ public class Match {
     }
 
     public void verifyAddSecondSelectedSquare(Square square){
+        boolean correctSelection = false, eatToken = false, isAscendantX = false, isAscendantY = false;
         if (square.getBttnSelect() instanceof Empty) {
-            if (  ( (square.getPosX() + square.getPosY()) % 2 ) == 0  ) {
-                if ((square.getPosX() == selectedSquare1.getPosX()+1)||(square.getPosX() == selectedSquare1.getPosX()-1)) {
-                    selectedSquare2 = square; 
-                    moveToken();
-                    changeTurn();
+            if (  ( (square.getPosX() + square.getPosY()) % 2 ) == 0  ) {              
+                if (   !(   (  (selectedSquare1.getPosY() - square.getPosY()) == (selectedSquare1.getPosX() - square.getPosX()) ) ||
+                            (  (selectedSquare1.getPosY() - square.getPosY()) == (square.getPosX() - selectedSquare1.getPosX()) ) ||
+                            (  (square.getPosY() - selectedSquare1.getPosY()) == (selectedSquare1.getPosX() - square.getPosX()) ) ||
+                            (  (square.getPosY() - selectedSquare1.getPosY()) == (square.getPosX() - selectedSquare1.getPosX()) )  )
+                    ) {
+                            showWrongSelection("Solo puede moverse en diagonal");
                 } else {
-                    if ((square.getPosX() == selectedSquare1.getPosX()+2)||(square.getPosX() == selectedSquare1.getPosX()-2)) {
-                        boolean isAscendantX = (square.getPosX() == selectedSquare1.getPosX()+2);
-                        boolean isAscendantY = (square.getPosY() == selectedSquare1.getPosY()+2);
-                        if (isAPossibleMove(square.getPosX(), square.getPosY(), isAscendantX, isAscendantY)) {
-                            selectedSquare2 = square; 
-                            eatToken(isAscendantX, isAscendantY);
-                            moveToken();
-                            changeTurn();
-                        } else {showWrongSelection("Puede moverse 2 casillas solo al comer");}
-                    } else { showWrongSelection("Puede moverse hasta 2 casillas alrededor"); }
+                    boolean radiusIs1 = (square.getPosX() == selectedSquare1.getPosX()-1) || (square.getPosX() == selectedSquare1.getPosX()+1);
+                    boolean radiusIs2 = (square.getPosX() == selectedSquare1.getPosX()-2) || (square.getPosX() == selectedSquare1.getPosX()+2);
+                    if ((radiusIs1 || radiusIs2)) {
+                        boolean isRightForToken = false;
+                        if ((selectedSquare1.getBttnSelect() instanceof Token)) {
+                            int radiustmp = radiusIs1 ? 1 : 2;
+                            isRightForToken = isPlayer1Turn ? (square.getPosX() == selectedSquare1.getPosX()-radiustmp):(square.getPosX() == selectedSquare1.getPosX()+radiustmp);
+                            if(!isRightForToken){ showWrongSelection("Solo puede moverse hacia el oponente"); }
+                        }
+                        if (radiusIs1) { correctSelection = (selectedSquare1.getBttnSelect() instanceof Queen) ? true : isRightForToken; }
+                        if (radiusIs2) {
+                            if ((selectedSquare1.getBttnSelect() instanceof Queen) || isRightForToken) { 
+                                isAscendantX = (square.getPosX() == selectedSquare1.getPosX()+2);
+                                isAscendantY = (square.getPosY() == selectedSquare1.getPosY()+2);
+                                if (isAPossibleMove(square.getPosX(), square.getPosY(), isAscendantX, isAscendantY)) {
+                                    eatToken = true;
+                                    correctSelection = true;
+                                } else {showWrongSelection("Puede moverse 2 casillas solo al comer");}
+                            }
+                        }
+                    } else {showWrongSelection("Puede moverse hasta 2 casillas alrededor"); }
                 }
             } else { showWrongSelection("Elija una casilla oscura"); }
         } else { showWrongSelection("Elija una casilla vacia"); }
+
+        if (correctSelection) {
+            selectedSquare2 = square; 
+            if (eatToken) { eatToken(isAscendantX, isAscendantY); }
+            moveToken();
+            changeTurn();
+        }
     }
 
     public boolean isAPossibleMove(int posXTo, int posYTo){
@@ -122,17 +137,29 @@ public class Match {
         return answer;
     }
 
-    public boolean possibleMoveExists(Square square){
+    public boolean possibleMoveExists(Square square, boolean hasAQueen){
         int posX = square.getPosX();
         int posY = square.getPosY();
-        boolean isPossible1 =   (isAPossibleMove(posX-1, posY-1)) ||
-                                (isAPossibleMove(posX-1, posY+1)) ||
-                                (isAPossibleMove(posX+1, posY-1)) ||
-                                (isAPossibleMove(posX+1, posY+1)) ;
-        boolean isPossible2 =   (isAPossibleMove(posX+2, posY+2, true, true)) ||
-                                (isAPossibleMove(posX+2, posY-2, true, false)) ||
-                                (isAPossibleMove(posX-2, posY+2, false, true)) ||
-                                (isAPossibleMove(posX-2, posY-2, false, false)) ;
+        boolean isPossible1 = false, isPossible2 = false;
+        if (hasAQueen) {
+            isPossible1 =   (isAPossibleMove(posX-1, posY-1)) ||
+                            (isAPossibleMove(posX-1, posY+1)) ||
+                            (isAPossibleMove(posX+1, posY-1)) ||
+                            (isAPossibleMove(posX+1, posY+1)) ;
+            isPossible2 =   (isAPossibleMove(posX+2, posY+2, true, true)) ||
+                            (isAPossibleMove(posX+2, posY-2, true, false)) ||
+                            (isAPossibleMove(posX-2, posY+2, false, true)) ||
+                            (isAPossibleMove(posX-2, posY-2, false, false)) ;
+        } else {
+            isPossible1 = isPlayer1Turn ? 
+                            (isAPossibleMove(posX-1, posY-1)) || (isAPossibleMove(posX-1, posY+1))
+                          : (isAPossibleMove(posX+1, posY-1)) || (isAPossibleMove(posX+1, posY+1)) ;
+            isPossible2 = isPlayer1Turn ?
+                            (isAPossibleMove(posX-2, posY+2, false, true)) || (isAPossibleMove(posX-2, posY-2, false, false))
+                          : (isAPossibleMove(posX+2, posY+2, true, true)) || (isAPossibleMove(posX+2, posY-2, true, false));
+                            
+                            
+        }
         return (isPossible1 || isPossible2);
     }
     
@@ -151,19 +178,15 @@ public class Match {
         int posYBtw = isAscendantY ? selectedSquare2.getPosY()-1 : selectedSquare2.getPosY()+1;
         squares[posXBtw][posYBtw].setBttnSelect(new Empty(squares[posXBtw][posYBtw]));
         this.board.repaint();
-        
     }
 
     public void changeTurn(){ 
         this.isPlayer1Turn = !isPlayer1Turn;
-        ChangeBGCLabel.changeBGColorJLabel(checkersFrame.getLblTurnIndicator1(), (this.isPlayer1Turn ? Color.GREEN : Color.RED));
-        ChangeBGCLabel.changeBGColorJLabel(checkersFrame.getLblTurnIndicator2(), (this.isPlayer1Turn ? Color.RED : Color.GREEN));
-        //checkersFrame.getLblTurnIndicator1().setBackground(this.isPlayer1Turn ? Color.GREEN : Color.RED); 
-        //checkersFrame.getLblTurnIndicator2().setBackground(this.isPlayer1Turn ? Color.RED : Color.GREEN); 
+        checkersFrame.getLblTurnIndicator1().setBackground(this.isPlayer1Turn ? Color.GREEN : Color.RED); 
+        checkersFrame.getLblTurnIndicator2().setBackground(this.isPlayer1Turn ? Color.RED : Color.GREEN); 
         checkersFrame.getLblWrongMoveDescripion().setText(("CAMBIA EL TURNO ( " + (isPlayer1Turn ? "-->" : "<--") + " )"));
         selectedSquare1 = null;
         selectedSquare2 = null;
-        System.out.println("ya cambio el turno");
     }
 
     public void showWrongSelection(String description){
@@ -172,15 +195,13 @@ public class Match {
     }
 
     public void showCorrectSelection(){
-        System.out.println("llamada correcta:");
         showWrongMoveBlinking(Color.CYAN);
         checkersFrame.getLblWrongMoveDescripion().setText("Seleccion correcta");
     }
 
-    public void showWrongMoveBlinking(Color color){   
+    public void showWrongMoveBlinking(Color color){ 
         JLabel lblToBlink = this.isPlayer1Turn ? checkersFrame.getLblTurnIndicator1(): checkersFrame.getLblTurnIndicator2();
         ChangeBGCLabel.blinkJLabel(lblToBlink, color, Color.GREEN, 1);
-        System.out.println("desde metodo parpadear en Match");
     }
 
     public String getPlayer1ColorTokenRoute() {

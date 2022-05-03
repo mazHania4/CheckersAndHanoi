@@ -18,8 +18,10 @@ public class WaitChangelblBGColor extends Thread{
     @Override
     public void run() {
         try {
+            System.out.println("espero:");
             Thread.sleep(seconds * 1000);
             lblToBlink.setBackground(color);
+            System.out.println("termine de esperar");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }   

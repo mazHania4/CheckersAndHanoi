@@ -1,7 +1,6 @@
 package com.ipc1.cah.ui.checkers.square_buttons;
 
 import javax.swing.*;
-
 import com.ipc1.cah.players.Player;
 import com.ipc1.cah.ui.checkers.Square;
 

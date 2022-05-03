@@ -12,7 +12,6 @@ public interface ImageRoutes {
     String REPORTS = IMAGES_HOME + "reportsButton" + EXTENSION;
 
     String TOKENS_HOME = IMAGES_HOME + "checkers/tokens/";
-    String BLACK_TOKEN = TOKENS_HOME + "black" + EXTENSION;
     String BLUE_TOKEN = TOKENS_HOME + "blue" + EXTENSION;
     String CYAN_TOKEN = TOKENS_HOME + "cyan" + EXTENSION;
     String GREEN_TOKEN = TOKENS_HOME + "green" + EXTENSION;
@@ -21,8 +20,10 @@ public interface ImageRoutes {
     String PINK_TOKEN = TOKENS_HOME + "pink" + EXTENSION;
     String PURPLE_TOKEN = TOKENS_HOME + "purple" + EXTENSION;
     String RED_TOKEN = TOKENS_HOME + "red" + EXTENSION;
-    String WHITE_TOKEN = TOKENS_HOME + "white" + EXTENSION;
     String YELLOW_TOKEN = TOKENS_HOME + "yellow" + EXTENSION;
+
+    String BLACK_QUEEN = TOKENS_HOME + "blackQueen" + EXTENSION;
+    String WHITE_QUEEN = TOKENS_HOME + "whiteQueen" + EXTENSION;
 
     String SQUARES_HOME = IMAGES_HOME + "checkers/squares/";
     String LIGHT_SQUARE = SQUARES_HOME + "light" + EXTENSION;
