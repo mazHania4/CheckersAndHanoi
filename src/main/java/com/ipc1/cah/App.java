@@ -1,11 +1,6 @@
 package com.ipc1.cah;
 
-//import java.io.FileNotFoundException;
-//import java.io.IOException;
-
-//import com.ipc1.cah.players.Players;
 import com.ipc1.cah.ui.players.ChoosePlayersFrame;
-//import com.ipc1.cah.utilities.file_management.SerializationManager;
 
 //import com.ipc1.cah.checkers.Match;
 //import com.ipc1.cah.ui.hanoi_towers.HanoiTowersFrame;
@@ -29,10 +24,10 @@ public class App
         /*
         SerializationManager playersSerializer = new SerializationManager("src/main/java/com/ipc1/cah/files/");
         Players players = new Players();
-        players.addPlayer(new Player("Onidas"));
+        players.addPlayer(new Player("Prueba"));
 
         try {
-            playersSerializer.writeSerialization(players, "players");
+            playersSerializer.writeSerialization(players, "prueba");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

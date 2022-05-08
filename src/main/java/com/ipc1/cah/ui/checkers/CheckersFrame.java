@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import com.ipc1.cah.ui.*;
 import com.ipc1.cah.ui.utilities.BGPanel;
+import com.ipc1.cah.utilities.chronometer.Time;
 
 public class CheckersFrame extends JFrame implements ActionListener{
 
@@ -12,6 +13,8 @@ public class CheckersFrame extends JFrame implements ActionListener{
     private JLabel lblTurnIndicator1;
     private JLabel lblTurnIndicator2;
     private JLabel lblWrongMoveDescripion;
+    private JLabel lblPlayer1Time;
+    private JLabel lblPlayer2Time;
 
     public CheckersFrame(JPanel checkersBoard, String player1Name, String player2Name){
 
@@ -52,7 +55,7 @@ public class CheckersFrame extends JFrame implements ActionListener{
         add(lblWrongMoveDescripion);
 
         JLabel lblPlayer1 = new JLabel(player1Name, SwingConstants.CENTER);
-        lblPlayer1.setBounds(50, 150, 150, 50);
+        lblPlayer1.setBounds(700, 150, 150, 50);
         lblPlayer1.setForeground(Color.WHITE);
         lblPlayer1.setOpaque(true);
         lblPlayer1.setBackground(Color.DARK_GRAY);
@@ -61,7 +64,7 @@ public class CheckersFrame extends JFrame implements ActionListener{
         add(lblPlayer1);
         
         JLabel lblPlayer2 = new JLabel(player2Name, SwingConstants.CENTER);
-        lblPlayer2.setBounds(700, 150, 150, 50);
+        lblPlayer2.setBounds(50, 150, 150, 50);
         lblPlayer2.setForeground(Color.WHITE);
         lblPlayer2.setOpaque(true);
         lblPlayer2.setBackground(Color.DARK_GRAY);
@@ -69,12 +72,44 @@ public class CheckersFrame extends JFrame implements ActionListener{
         lblPlayer2.setFont(new Font((lblPlayer2.getFont().getName()), Font.BOLD, 24));
         add(lblPlayer2);
 
+        lblPlayer1Time = new JLabel("00:00:00", SwingConstants.CENTER);
+        lblPlayer1Time.setBounds(700, 300, 150, 50);
+        lblPlayer1Time.setForeground(Color.WHITE);
+        lblPlayer1Time.setOpaque(true);
+        lblPlayer1Time.setBackground(Color.DARK_GRAY);
+        lblPlayer1Time.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.LIGHT_GRAY));
+        lblPlayer1Time.setFont(new Font((lblPlayer1Time.getFont().getName()), Font.BOLD, 24));
+        add(lblPlayer1Time);
+        
+        lblPlayer2Time = new JLabel("00:00:00", SwingConstants.CENTER);
+        lblPlayer2Time.setBounds(50, 300, 150, 50);
+        lblPlayer2Time.setForeground(Color.WHITE);
+        lblPlayer2Time.setOpaque(true);
+        lblPlayer2Time.setBackground(Color.DARK_GRAY);
+        lblPlayer2Time.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.LIGHT_GRAY));
+        lblPlayer2Time.setFont(new Font((lblPlayer2Time.getFont().getName()), Font.BOLD, 24));
+        add(lblPlayer2Time);
+
         this.setVisible(true);
     }
 
     public void actionPerformed(ActionEvent evt) {
         
 
+    }
+
+    public void showEndOfMatch(String winnerName, int winnerMoves, Time winnerTime, String player2Name, int player2Moves, Time player2Time){
+        JOptionPane.showMessageDialog(null, (
+            "GANADOR: " + winnerName + "\n" +
+            "MOVIMIENTOS:\n" + 
+            "   -" + winnerName + ": " + winnerMoves +
+            "\n   -" + player2Name + ": " + player2Moves +
+            "TIEMPOS:\n" + 
+            "   -" + winnerName + ":  " + winnerTime.getMinutes() + ":" + winnerTime.getSeconds() +
+            "\n   -" + player2Name + ":  " + player2Time.getMinutes() + ":" + player2Time.getSeconds()
+        ));
+        this.setVisible(false);
+        this.dispose();
     }
 
     public JLabel getLblTurnIndicator1() {
@@ -89,4 +124,12 @@ public class CheckersFrame extends JFrame implements ActionListener{
         return lblWrongMoveDescripion;
     }
 
+    public JLabel getLblPlayer1Time() {
+        return lblPlayer1Time;
+    }
+
+    public JLabel getLblPlayer2Time() {
+        return lblPlayer2Time;
+    }
+    
 }

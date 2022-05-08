@@ -2,6 +2,8 @@ package com.ipc1.cah.players;
 
 import java.io.Serializable;
 
+import com.ipc1.cah.utilities.chronometer.Time;
+
 public class Player implements Serializable{
    
     private String name;
@@ -10,18 +12,18 @@ public class Player implements Serializable{
     private int wonMatchesCheckers;
     private int lostMatchesCheckers;
     private int totalMovesCheckers;
-    private double averageMovesCheckers;
+    private int averageMovesCheckers;
     private int recordMovesCheckers;
-    private double recordTimeCheckers;
+    private Time recordTimeCheckers;
     
     private int playedMatchesHanoi;
     private int wonMatchesHanoi;
     private int lostMatchesHanoi;
     private int abandonedMatchesHanoi;
-    private double averageMovesHanoi;
-    private double averageTimeHanoi;
+    private int averageMovesHanoi;
+    private Time averageTimeHanoi;
     private int totalMovesHanoi;
-    private double totalTimeHanoi;
+    private Time totalTimeHanoi;
     
     public Player(String name){
         this.name = name;
@@ -31,16 +33,16 @@ public class Player implements Serializable{
         this.totalMovesCheckers = 0;
         this.averageMovesCheckers = 0;
         this.recordMovesCheckers = 0;
-        this.recordTimeCheckers = 0;
+        this.recordTimeCheckers = new Time();
         
         this.playedMatchesHanoi = 0;
         this.wonMatchesHanoi = 0;
         this.lostMatchesHanoi = 0;
         this.abandonedMatchesHanoi = 0;
         this.averageMovesHanoi = 0;
-        this.averageTimeHanoi = 0;
+        this.averageTimeHanoi = new Time();
         this.totalMovesHanoi = 0;
-        this.totalTimeHanoi = 0;
+        this.totalTimeHanoi = new Time();
     }
 
     public String getName() {
@@ -83,9 +85,9 @@ public class Player implements Serializable{
         this.totalMovesCheckers = totalMovesCheckers;
     }
 
-    public double getAverageMovesCheckers() {
+    public int getAverageMovesCheckers() {
         if (this.getPlayedMatchesCheckers()>0) {
-            this.averageMovesCheckers = this.getTotalMovesCheckers() / this.getPlayedMatchesCheckers();
+            this.averageMovesCheckers = (int)(this.getTotalMovesCheckers() / this.getPlayedMatchesCheckers());
         } else {
             this.averageMovesCheckers = 0;
         }
@@ -102,13 +104,15 @@ public class Player implements Serializable{
         }
     }
     
-    public double getRecordTimeCheckers() {
+    public Time getRecordTimeCheckers() {
         return recordTimeCheckers;
     }
     
-    public void setRecordTimeCheckers(int recordTimeCheckers) {
-        if (recordTimeCheckers < this.getRecordTimeCheckers()) {
-            this.recordTimeCheckers = recordTimeCheckers;
+    public void setRecordTimeCheckers(Time newRecordTimeCheckers) {
+        if (newRecordTimeCheckers.getMinutes() <= this.getRecordTimeCheckers().getMinutes()) {
+            if (newRecordTimeCheckers.getSeconds() < this.getRecordTimeCheckers().getSeconds()) {
+                this.recordTimeCheckers = newRecordTimeCheckers;
+            }
         }
     }
 
@@ -148,20 +152,19 @@ public class Player implements Serializable{
         this.abandonedMatchesHanoi = abandonedMatchesHanoi;
     }
 
-    public double getAverageMovesHanoi() {
+    public int getAverageMovesHanoi() {
         if (this.getPlayedMatchesHanoi()>0) {
-            this.averageMovesHanoi = this.getTotalMovesHanoi() / this.getPlayedMatchesHanoi();
+            this.averageMovesHanoi = (int)(this.getTotalMovesHanoi() / this.getPlayedMatchesHanoi());
         } else {
             this.averageMovesHanoi = 0;
         }
         return averageMovesHanoi;
     }
     
-    public double getAverageTimeHanoi() {
+    public Time getAverageTimeHanoi() {
         if (this.getPlayedMatchesHanoi()>0) {
-            this.averageTimeHanoi = this.getTotalTimeHanoi() / this.getPlayedMatchesHanoi();
-        } else {
-            this.averageTimeHanoi = 0;
+            this.averageTimeHanoi.addMinutes( (int) this.getTotalTimeHanoi().getMinutes() / this.getPlayedMatchesHanoi());
+            this.averageTimeHanoi.addSeconds( (int) this.getTotalTimeHanoi().getSeconds() / this.getPlayedMatchesHanoi());
         }
         return averageTimeHanoi;
     }
@@ -174,11 +177,12 @@ public class Player implements Serializable{
         this.totalMovesHanoi = totalMovesHanoi;
     }
 
-    public double getTotalTimeHanoi() {
+    public Time getTotalTimeHanoi() {
         return totalTimeHanoi;
     }
 
-    public void setTotalTimeHanoi(double totalTimeHanoi) {
-        this.totalTimeHanoi = totalTimeHanoi;
+    public void sumToTotalTimeHanoi(Time timeToAdd) {
+        this.totalTimeHanoi.addMinutes(timeToAdd.getMinutes());
+        this.totalTimeHanoi.addSeconds(timeToAdd.getSeconds());
     }
 }

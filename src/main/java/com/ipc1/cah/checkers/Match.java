@@ -8,6 +8,7 @@ import com.ipc1.cah.ui.checkers.*;
 import com.ipc1.cah.ui.checkers.square_buttons.*;
 import com.ipc1.cah.ui.utilities.*;
 import com.ipc1.cah.utilities.*;
+import com.ipc1.cah.utilities.chronometer.Chronometer;
 
 public class Match {
 
@@ -27,6 +28,8 @@ public class Match {
     private int player2tokens;
     private int player1Moves;
     private int player2Moves;
+    private Chronometer player1Chronometer;
+    private Chronometer player2Chronometer;
 
     public Match(Player player1, Player player2){
 
@@ -36,11 +39,11 @@ public class Match {
         this.isPlayer1Turn = true;
         this.player1tokens = 12;
         this.player2tokens = 12;
-
+        
         squares = new Square[BOARD_SIZE][BOARD_SIZE];
         player1ColorTokenRoute = GenerateRandom.colorTokenRoute();
         player2ColorTokenRoute = GenerateRandom.colorTokenRoute(player1ColorTokenRoute);
-
+        
         board = new JPanel();
         board.setLayout(new GridLayout(BOARD_SIZE, BOARD_SIZE));
         board.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.LIGHT_GRAY));
@@ -54,8 +57,14 @@ public class Match {
             }
         }
         checkersFrame = new CheckersFrame(board, player1.getName(), player2.getName());
+        
+        this.player1Chronometer = new Chronometer(checkersFrame.getLblPlayer1Time());
+        this.player2Chronometer = new Chronometer(checkersFrame.getLblPlayer2Time());
+        player1Chronometer.start();
+        player2Chronometer.start();
+        player1Chronometer.resumeTimeCounter();
     }
-
+    
     public void selectSquare(Square square){
         if (selectedSquare1 == null) { 
             verifyAddFirstSelectedSquare(square);
@@ -213,31 +222,40 @@ public class Match {
 
     public void changeTurn(){ 
         System.out.println("Cambio turno, 1: " + player1tokens + " 2: " + player2tokens);
-        if ((player2tokens > 0) && (player2tokens > 0)) {
+        if ((player1tokens > 0) && (player2tokens > 0)) {
             this.isPlayer1Turn = !isPlayer1Turn;
             checkersFrame.getLblTurnIndicator1().setBackground(this.isPlayer1Turn ? Color.GREEN : Color.RED); 
             checkersFrame.getLblTurnIndicator2().setBackground(this.isPlayer1Turn ? Color.RED : Color.GREEN); 
             checkersFrame.getLblWrongMoveDescripion().setText(("CAMBIA EL TURNO ( " + (isPlayer1Turn ? "-->" : "<--") + " )"));
             selectedSquare1 = null;
             selectedSquare2 = null;
+            Chronometer tmp1 = isPlayer1Turn ? player1Chronometer : player2Chronometer;
+            Chronometer tmp2 = isPlayer1Turn ? player2Chronometer : player1Chronometer;
+            tmp1.resumeTimeCounter();
+            tmp2.pauseTimeCounter();
         } else {
             endMatch();
         }
     }
 
     public void endMatch(){
+        player1Chronometer.endTimeCounter();
+        player2Chronometer.endTimeCounter();
         if (isPlayer1Turn) {
             player1.setLostMatchesCheckers(player1.getLostMatchesCheckers() + 1);
             player2.setWonMatchesCheckers(player2.getWonMatchesCheckers() + 1);
-            
+            checkersFrame.showEndOfMatch(player2.getName(), player2Moves, player2Chronometer.getTime(), player1.getName(), player1Moves, player1Chronometer.getTime());
         } else { 
             player2.setLostMatchesCheckers(player2.getLostMatchesCheckers() + 1);
             player1.setWonMatchesCheckers(player1.getWonMatchesCheckers() + 1);
+            checkersFrame.showEndOfMatch(player1.getName(), player1Moves, player1Chronometer.getTime(), player2.getName(), player2Moves, player2Chronometer.getTime());
         }
         player1.setTotalMovesCheckers(player1.getTotalMovesCheckers() + player1Moves); 
         player2.setTotalMovesCheckers(player2.getPlayedMatchesCheckers() + player2Moves);
         player1.setRecordMovesCheckers(player1Moves); 
         player2.setRecordMovesCheckers(player2Moves); 
+        player1.setRecordTimeCheckers(player1Chronometer.getTime());
+        player2.setRecordTimeCheckers(player2Chronometer.getTime());
     }
 
     public void showWrongSelection(String description){
