@@ -1,6 +1,6 @@
 package com.ipc1.cah.ui.checkers;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import com.ipc1.cah.ui.*;
@@ -13,7 +13,7 @@ public class CheckersFrame extends JFrame implements ActionListener{
     private JLabel lblTurnIndicator2;
     private JLabel lblWrongMoveDescripion;
 
-    public CheckersFrame(JPanel checkersBoard){
+    public CheckersFrame(JPanel checkersBoard, String player1Name, String player2Name){
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
@@ -50,7 +50,25 @@ public class CheckersFrame extends JFrame implements ActionListener{
         lblWrongMoveDescripion.setHorizontalAlignment(SwingConstants.CENTER);
         lblWrongMoveDescripion.setText("INICIA TURNO ( --> )");
         add(lblWrongMoveDescripion);
+
+        JLabel lblPlayer1 = new JLabel(player1Name, SwingConstants.CENTER);
+        lblPlayer1.setBounds(50, 150, 150, 50);
+        lblPlayer1.setForeground(Color.WHITE);
+        lblPlayer1.setOpaque(true);
+        lblPlayer1.setBackground(Color.DARK_GRAY);
+        lblPlayer1.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.LIGHT_GRAY));
+        lblPlayer1.setFont(new Font((lblPlayer1.getFont().getName()), Font.BOLD, 24));
+        add(lblPlayer1);
         
+        JLabel lblPlayer2 = new JLabel(player2Name, SwingConstants.CENTER);
+        lblPlayer2.setBounds(700, 150, 150, 50);
+        lblPlayer2.setForeground(Color.WHITE);
+        lblPlayer2.setOpaque(true);
+        lblPlayer2.setBackground(Color.DARK_GRAY);
+        lblPlayer2.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.LIGHT_GRAY));
+        lblPlayer2.setFont(new Font((lblPlayer2.getFont().getName()), Font.BOLD, 24));
+        add(lblPlayer2);
+
         this.setVisible(true);
     }
 

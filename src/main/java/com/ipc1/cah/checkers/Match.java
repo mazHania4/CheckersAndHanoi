@@ -28,11 +28,10 @@ public class Match {
     private int player1Moves;
     private int player2Moves;
 
-    public Match(){
+    public Match(Player player1, Player player2){
 
-        //jugadores provisionales, pendiente establecer correctamente
-        this.player1 = new Player("Pepe");
-        this.player2 = new Player("Oni");
+        this.player1 = player1;
+        this.player2 = player2;
 
         this.isPlayer1Turn = true;
         this.player1tokens = 12;
@@ -54,7 +53,7 @@ public class Match {
                 board.add(tmp);
             }
         }
-        checkersFrame = new CheckersFrame(board);
+        checkersFrame = new CheckersFrame(board, player1.getName(), player2.getName());
     }
 
     public void selectSquare(Square square){

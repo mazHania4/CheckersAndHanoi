@@ -1,6 +1,8 @@
 package com.ipc1.cah.players;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable{
    
     private String name;
 
@@ -45,8 +47,13 @@ public class Player {
         return name;
     }
 
+
+
+
     //Checkers
 
+
+    
     public int getPlayedMatchesCheckers() {
         this.playedMatchesCheckers = wonMatchesCheckers + lostMatchesCheckers;
         return playedMatchesCheckers;
@@ -107,10 +114,10 @@ public class Player {
 
 
 
+
     //Hanoi
 
     
-
     
     public int getPlayedMatchesHanoi() {
         this.playedMatchesHanoi = this.getWonMatchesHanoi() + this.getLostMatchesHanoi() + this.getAbandonedMatchesHanoi();
@@ -174,7 +181,4 @@ public class Player {
     public void setTotalTimeHanoi(double totalTimeHanoi) {
         this.totalTimeHanoi = totalTimeHanoi;
     }
-
-    
-
 }
