@@ -3,6 +3,7 @@ package com.ipc1.cah.ui;
 import javax.swing.*;
 import java.awt.event.*;
 
+import com.ipc1.cah.ui.players.ChoosePlayersFrame;
 import com.ipc1.cah.ui.utilities.BGPanel;
 
 public class MainWindow extends JFrame implements ActionListener{
@@ -56,7 +57,9 @@ public class MainWindow extends JFrame implements ActionListener{
 
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == bttnPlayCheckers) {
-            System.out.println("click sobre jugar damas");
+            new ChoosePlayersFrame(true, true);
+            this.setVisible(false);
+            this.dispose();
         }
         if (evt.getSource() == bttnPlayHanoiTowers) {
             System.out.println("click sobre jugar torres de hanoi");

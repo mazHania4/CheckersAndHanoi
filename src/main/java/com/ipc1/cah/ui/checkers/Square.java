@@ -2,7 +2,7 @@ package com.ipc1.cah.ui.checkers;
 
 import javax.swing.*;
 import java.awt.*;
-import com.ipc1.cah.checkers.Match;
+import com.ipc1.cah.checkers.CheckersMatch;
 import com.ipc1.cah.ui.ImageRoutes;
 import com.ipc1.cah.ui.checkers.square_buttons.*;
 
@@ -15,11 +15,11 @@ public class Square extends JPanel {
 
     private String bgImageRoute;
     private SquareButton bttnSelect;
-    private Match match;
+    private CheckersMatch match;
     private int posX;
     private int posY;
 
-    public Square(boolean isDarkSquare, boolean hasToken, Match match, int posX, int posY){
+    public Square(boolean isDarkSquare, boolean hasToken, CheckersMatch match, int posX, int posY){
         this.setLayout(null);
         this.match = match;
         this.bgImageRoute = isDarkSquare ? ImageRoutes.DARK_SQUARE : ImageRoutes.LIGHT_SQUARE;
@@ -77,7 +77,7 @@ public class Square extends JPanel {
         this.posY = posY;
     }
 
-    public Match getMatch() {
+    public CheckersMatch getMatch() {
         return match;
     }
 

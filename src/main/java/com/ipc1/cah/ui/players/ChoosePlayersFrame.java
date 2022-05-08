@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import com.ipc1.cah.checkers.Match;
+import com.ipc1.cah.checkers.CheckersMatch;
 import com.ipc1.cah.players.*;
 import com.ipc1.cah.ui.*;
 import com.ipc1.cah.ui.utilities.BGPanel;
@@ -77,7 +77,8 @@ public class ChoosePlayersFrame extends JFrame implements ActionListener{
                 if ((playersPanel1.getPlayerSelected() != null) && (playersPanel2.getPlayerSelected() != null) && areDifferentPlayers) {
                     if (isForCheckers) {
                         this.setVisible(false);
-                        new Match(playersPanel1.getPlayerSelected(), playersPanel2.getPlayerSelected());
+                        new CheckersMatch(playersPanel1.getPlayerSelected(), playersPanel2.getPlayerSelected());
+                        this.dispose();
                     }
                 }
             } else {
@@ -85,6 +86,7 @@ public class ChoosePlayersFrame extends JFrame implements ActionListener{
                     if (!isForCheckers) {
                         this.setVisible(false);
                         System.out.println("Inicia Hanoi");
+                        this.dispose();
                     }
                     
                 }
@@ -110,7 +112,6 @@ public class ChoosePlayersFrame extends JFrame implements ActionListener{
                         }
                         isAWrongName = !isADifferentName;
                     }
-
                 }
             } while (isAWrongName);
             if (!cancel) {

@@ -100,15 +100,16 @@ public class CheckersFrame extends JFrame implements ActionListener{
 
     public void showEndOfMatch(String winnerName, int winnerMoves, Time winnerTime, String player2Name, int player2Moves, Time player2Time){
         JOptionPane.showMessageDialog(null, (
-            "GANADOR: " + winnerName + "\n" +
-            "MOVIMIENTOS:\n" + 
+            "GANADOR: " + winnerName +
+            "\nMOVIMIENTOS:\n" + 
             "   -" + winnerName + ": " + winnerMoves +
             "\n   -" + player2Name + ": " + player2Moves +
-            "TIEMPOS:\n" + 
+            "\nTIEMPOS:\n" + 
             "   -" + winnerName + ":  " + winnerTime.getMinutes() + ":" + winnerTime.getSeconds() +
             "\n   -" + player2Name + ":  " + player2Time.getMinutes() + ":" + player2Time.getSeconds()
         ));
         this.setVisible(false);
+        new MainWindow();
         this.dispose();
     }
 

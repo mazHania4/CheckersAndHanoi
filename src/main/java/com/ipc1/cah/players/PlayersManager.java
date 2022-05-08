@@ -13,7 +13,7 @@ public class PlayersManager {
         try {
             playersSerializer.writeSerialization(playersList, "players");
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -22,9 +22,9 @@ public class PlayersManager {
         try {
             Players tmp = (Players) playersSerializer.readSerialization("players");
             answer = tmp.getPlayersArray();    
-        } catch (FileNotFoundException e) { e.printStackTrace(); } 
-          catch (IOException e) { e.printStackTrace(); }
-          catch (ClassNotFoundException e) { e.printStackTrace();}
+        } catch (FileNotFoundException e) { /*e.printStackTrace();*/ } 
+        catch (IOException e) { /*e.printStackTrace();*/ }
+        catch (ClassNotFoundException e) { /*e.printStackTrace();*/}
         return answer;
     }
 
@@ -32,9 +32,9 @@ public class PlayersManager {
         Players answer = new Players();
         try {
             answer = (Players) playersSerializer.readSerialization("players");
-        } catch (FileNotFoundException e) { e.printStackTrace(); } 
-          catch (IOException e) { e.printStackTrace(); }
-          catch (ClassNotFoundException e) { e.printStackTrace();}
+        } catch (FileNotFoundException e) { /*e.printStackTrace();*/ } 
+          catch (IOException e) { /*e.printStackTrace();*/ }
+          catch (ClassNotFoundException e) { /*e.printStackTrace();*/ }
         return answer;
     }
 

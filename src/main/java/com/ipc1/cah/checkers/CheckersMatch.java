@@ -10,7 +10,7 @@ import com.ipc1.cah.ui.utilities.*;
 import com.ipc1.cah.utilities.*;
 import com.ipc1.cah.utilities.chronometer.Chronometer;
 
-public class Match {
+public class CheckersMatch {
 
     public final int BOARD_SIZE = 8; 
 
@@ -31,7 +31,7 @@ public class Match {
     private Chronometer player1Chronometer;
     private Chronometer player2Chronometer;
 
-    public Match(Player player1, Player player2){
+    public CheckersMatch(Player player1, Player player2){
 
         this.player1 = player1;
         this.player2 = player2;
@@ -242,13 +242,13 @@ public class Match {
         player1Chronometer.endTimeCounter();
         player2Chronometer.endTimeCounter();
         if (isPlayer1Turn) {
-            player1.setLostMatchesCheckers(player1.getLostMatchesCheckers() + 1);
-            player2.setWonMatchesCheckers(player2.getWonMatchesCheckers() + 1);
-            checkersFrame.showEndOfMatch(player2.getName(), player2Moves, player2Chronometer.getTime(), player1.getName(), player1Moves, player1Chronometer.getTime());
-        } else { 
             player2.setLostMatchesCheckers(player2.getLostMatchesCheckers() + 1);
             player1.setWonMatchesCheckers(player1.getWonMatchesCheckers() + 1);
             checkersFrame.showEndOfMatch(player1.getName(), player1Moves, player1Chronometer.getTime(), player2.getName(), player2Moves, player2Chronometer.getTime());
+        } else { 
+            player1.setLostMatchesCheckers(player1.getLostMatchesCheckers() + 1);
+            player2.setWonMatchesCheckers(player2.getWonMatchesCheckers() + 1);
+            checkersFrame.showEndOfMatch(player2.getName(), player2Moves, player2Chronometer.getTime(), player1.getName(), player1Moves, player1Chronometer.getTime());
         }
         player1.setTotalMovesCheckers(player1.getTotalMovesCheckers() + player1Moves); 
         player2.setTotalMovesCheckers(player2.getPlayedMatchesCheckers() + player2Moves);
