@@ -18,7 +18,6 @@ import com.ipc1.cah.ui.utilities.BGPanel;
 public class ReportsFrame extends JFrame{
 
     private Player[] playersArray;
-    private PlayersPanel playersPanel1;
 
     public ReportsFrame(){
         this.playersArray = PlayersManager.getSavedPlayersArray();
