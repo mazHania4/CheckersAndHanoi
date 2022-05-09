@@ -221,7 +221,6 @@ public class CheckersMatch {
     } 
 
     public void changeTurn(){ 
-        System.out.println("Cambio turno, 1: " + player1tokens + " 2: " + player2tokens);
         if ((player1tokens > 0) && (player2tokens > 0)) {
             this.isPlayer1Turn = !isPlayer1Turn;
             checkersFrame.getLblTurnIndicator1().setBackground(this.isPlayer1Turn ? Color.GREEN : Color.RED); 

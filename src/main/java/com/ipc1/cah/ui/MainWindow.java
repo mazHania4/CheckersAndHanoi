@@ -62,7 +62,9 @@ public class MainWindow extends JFrame implements ActionListener{
             this.dispose();
         }
         if (evt.getSource() == bttnPlayHanoiTowers) {
-            System.out.println("click sobre jugar torres de hanoi");
+            new ChoosePlayersFrame(false, false);
+            this.setVisible(false);
+            this.dispose();
         }
         if (evt.getSource() == bttnReports) {
             System.out.println("click sobre reportes");

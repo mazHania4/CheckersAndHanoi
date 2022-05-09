@@ -1,10 +1,8 @@
 package com.ipc1.cah;
 
+import com.ipc1.cah.hanoi.HanoiMatch;
+import com.ipc1.cah.players.Player;
 import com.ipc1.cah.ui.MainWindow;
-//import com.ipc1.cah.ui.players.ChoosePlayersFrame;
-//import com.ipc1.cah.checkers.Match;
-//import com.ipc1.cah.ui.hanoi_towers.HanoiTowersFrame;
-//import com.ipc1.cah.ui.checkers.CheckersFrame;
 
 /**
  * Hello world!
@@ -17,11 +15,6 @@ public class App
         System.out.println( "Hello World!" );
         new MainWindow();
         
-        
-        //new CheckersFrame();
-        //new HanoiTowersFrame();
-        //new Match();
-
         /*
         SerializationManager playersSerializer = new SerializationManager("src/main/java/com/ipc1/cah/files/");
         Players players = new Players();
@@ -47,6 +40,6 @@ public class App
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-    */
+        */
     }
 }

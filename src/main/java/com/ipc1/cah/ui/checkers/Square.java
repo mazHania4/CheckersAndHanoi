@@ -32,16 +32,6 @@ public class Square extends JPanel {
         }
         add(bttnSelect);
     }
-
-    /*public Square(String bgImageRoute, String bttnImageRoute, Match match, int posX, int posY){
-        this.setLayout(null);
-        this.match = match;
-        this.bgImageRoute = bgImageRoute;
-        this.posX = posX;
-        this.posY = posY;
-        this.bttnSelect = new SquareButton(bttnImageRoute, this);
-        add(bttnSelect);
-    }*/
     
     @Override
     public void paint(Graphics g){

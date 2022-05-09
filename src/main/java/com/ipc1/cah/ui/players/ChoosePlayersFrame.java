@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import com.ipc1.cah.checkers.CheckersMatch;
+import com.ipc1.cah.hanoi.HanoiMatch;
 import com.ipc1.cah.players.*;
 import com.ipc1.cah.ui.*;
 import com.ipc1.cah.ui.utilities.BGPanel;
@@ -35,13 +36,13 @@ public class ChoosePlayersFrame extends JFrame implements ActionListener{
         setContentPane(new BGPanel(ImageRoutes.EDGE_BACKGROUND));
 
         JLabel lblPlayer1 = new JLabel("JUGADOR 1");
-        lblPlayer1.setBounds((selects2Players ? 200 : 500), 20, 200, 50);
+        lblPlayer1.setBounds((selects2Players ? 200 : 375), 20, 200, 50);
         lblPlayer1.setForeground(Color.WHITE);
         lblPlayer1.setFont(new Font((lblPlayer1.getFont().getName()), Font.BOLD, 20));
         add(lblPlayer1);
 
         playersPanel1 = new PlayersPanel(playersArray);
-        playersPanel1.setLocation((selects2Players ? 100 : 400), 80);
+        playersPanel1.setLocation((selects2Players ? 100 : 300), 80);
         add(playersPanel1);
 
         if (selects2Players) {
@@ -84,11 +85,32 @@ public class ChoosePlayersFrame extends JFrame implements ActionListener{
             } else {
                 if (playersPanel1.getPlayerSelected() != null) {
                     if (!isForCheckers) {
-                        this.setVisible(false);
-                        System.out.println("Inicia Hanoi");
-                        this.dispose();
+                        boolean isAwrongNumber = true, cancel = false;
+                        int disksNumber = 0;
+                        do {
+                            String input = JOptionPane.showInputDialog(null, "Ingrese la cantidad de discos, entre 3 y 8", "Cantidad de discos", JOptionPane.QUESTION_MESSAGE);
+                            if (input == null) {
+                                cancel = true;
+                                isAwrongNumber = false;
+                            } else {
+                                if ((input.trim()).length()==1) {
+                                    try {
+                                        disksNumber = Integer.parseInt(input);
+                                        if ((disksNumber < 8) && (disksNumber > 0) ) {
+                                        isAwrongNumber = false;
+                                        }
+                                    } catch (Exception ex) {
+                                        isAwrongNumber = true;
+                                    }
+                                }
+                            }
+                        } while (isAwrongNumber);
+                        if (!cancel) {
+                            this.setVisible(false);
+                            new HanoiMatch(new Player("Jugador"), disksNumber);
+                            this.dispose();
+                        }
                     }
-                    
                 }
             }
         }

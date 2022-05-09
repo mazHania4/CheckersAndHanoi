@@ -24,9 +24,7 @@ public class CheckersFrame extends JFrame implements ActionListener{
         setSize(MainWindow.WIDTH, MainWindow.HEIGHT);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-
-        BGPanel pnlBackground = new BGPanel(ImageRoutes.FULL_BACKGROUND);
-        setContentPane(pnlBackground);
+        setContentPane(new BGPanel(ImageRoutes.FULL_BACKGROUND));
 
         checkersBoard.setSize(BOARD_SIZE, BOARD_SIZE);
         int cBoardX = (getWidth() - checkersBoard.getWidth() - getInsets().left - getInsets().right) / 2;

@@ -28,5 +28,17 @@ public interface ImageRoutes {
     String SQUARES_HOME = IMAGES_HOME + "checkers/squares/";
     String LIGHT_SQUARE = SQUARES_HOME + "light" + EXTENSION;
     String DARK_SQUARE = SQUARES_HOME +"dark"+ EXTENSION;
+
+    String HANOI_HOME = IMAGES_HOME + "hanoi/";
+    String HANOI_BOARD = HANOI_HOME + "board" + EXTENSION;
+    String DISKS_HOME = HANOI_HOME + "disks/";
+    String AQUA_DISK = DISKS_HOME + "aqua" + EXTENSION;
+    String BLUE_DISK = DISKS_HOME + "blue" + EXTENSION;
+    String CYAN_DISK = DISKS_HOME + "cyan" + EXTENSION;
+    String GREEN_DISK = DISKS_HOME + "green" + EXTENSION;
+    String ORANGE_DISK = DISKS_HOME + "orange" + EXTENSION;
+    String PURPLE_DISK = DISKS_HOME + "purple" + EXTENSION;
+    String RED_DISK = DISKS_HOME + "red" + EXTENSION;
+    String YELLOW_DISK = DISKS_HOME + "yellow" + EXTENSION;
     
 }

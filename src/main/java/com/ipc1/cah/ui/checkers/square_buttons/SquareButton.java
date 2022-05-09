@@ -21,7 +21,6 @@ public abstract class SquareButton extends JButton implements ActionListener{
 
     public void actionPerformed(java.awt.event.ActionEvent evt) {
         squareContainer.getMatch().selectSquare(squareContainer);        
-        System.out.println("click sobre casilla " + squareContainer.getPosX() + " y: " + squareContainer.getPosY());
     }
 
     public Square getSquareContainer() {
