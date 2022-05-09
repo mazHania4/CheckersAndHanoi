@@ -255,6 +255,7 @@ public class CheckersMatch {
         player2.setRecordMovesCheckers(player2Moves); 
         player1.setRecordTimeCheckers(player1Chronometer.getTime());
         player2.setRecordTimeCheckers(player2Chronometer.getTime());
+        PlayersManager.savePlayersList();
     }
 
     public void showWrongSelection(String description){

@@ -75,38 +75,28 @@ public class HanoiTowersFrame extends JFrame implements ActionListener{
             towers[i].setBounds((i*250)+20, 0, 250, 295);  
             pnlboard.add(towers[i]); 
         }
-/*
-        towers[0].setBounds(0, 0, 250, 300);
-        Tower tower = new Tower();
-        tower.setBounds(0, 0, 250, 300);
-        pnlboard.add(tower);
 
-        Disk disk = new Disk(2, tower);
-        disk.setLocation(30, 20);
-        tower.stack(disk);
-        tower.add(disk);
-*/
         this.setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.bttnTower1To3) {
-
+            match.moveDisk(0, 2);
         }
         if (e.getSource() == this.bttnTower1To2) {
-
+            match.moveDisk(0, 1);
         }
         if (e.getSource() == this.bttnTower2To1) {
-
+            match.moveDisk(1, 0);
         }
         if (e.getSource() == this.bttnTower2To3) {
-
+            match.moveDisk(1, 2);
         }
         if (e.getSource() == this.bttnTower3To2) {
-
+            match.moveDisk(2, 1);
         }
         if (e.getSource() == this.bttnTower3To1) {
-
+            match.moveDisk(2, 0);
         }
     }
 

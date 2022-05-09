@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.event.*;
 
 import com.ipc1.cah.ui.players.ChoosePlayersFrame;
+import com.ipc1.cah.ui.reports.ReportsFrame;
 import com.ipc1.cah.ui.utilities.BGPanel;
 
 public class MainWindow extends JFrame implements ActionListener{
@@ -67,7 +68,9 @@ public class MainWindow extends JFrame implements ActionListener{
             this.dispose();
         }
         if (evt.getSource() == bttnReports) {
-            System.out.println("click sobre reportes");
+            new ReportsFrame();
+            this.setVisible(false);
+            this.dispose();
         }
     }
 

@@ -32,7 +32,20 @@ public class HanoiMatch {
         chronometer.start();
         chronometer.resumeTimeCounter();
 
+        this.player.setAbandonedMatchesHanoi(player.getAbandonedMatchesHanoi() + 1);
+
 
     }
+
+    public void moveDisk(int from, int to){
+        if ((towers[to].getTop() == null) || (towers[from].getTop().getRadio() < towers[to].getTop().getRadio())) {
+            player.setTotalMovesHanoi(player.getTotalMovesHanoi()+1);
+            Disk tmp = towers[from].pop();
+            towers[to].stack(tmp);
+        }
+
+    }
+
+
 
 }

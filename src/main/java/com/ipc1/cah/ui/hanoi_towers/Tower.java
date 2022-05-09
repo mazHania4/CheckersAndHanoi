@@ -1,6 +1,5 @@
 package com.ipc1.cah.ui.hanoi_towers;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Tower extends JPanel{
@@ -27,6 +26,7 @@ public class Tower extends JPanel{
     public void stack(Disk disk) {
         towerSize++;
         disk.setLocation(0, 295-(30*(towerSize)));
+        disk.setTower(this);
         this.add(disk);
         this.repaint();
         Disk newNode = disk; 
@@ -45,6 +45,8 @@ public class Tower extends JPanel{
             answer = root;
             root = root.getNext();
             towerSize--;
+            remove(answer);
+            repaint();
         }
         return answer;
     }
@@ -55,10 +57,6 @@ public class Tower extends JPanel{
             answer = root;
         }
         return answer;
-    }
-
-    public void list() {
-        
     }
     
 }

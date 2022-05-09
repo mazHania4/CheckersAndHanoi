@@ -107,6 +107,12 @@ public class Player implements Serializable{
     public Time getRecordTimeCheckers() {
         return recordTimeCheckers;
     }
+
+    public String getStringRecordTimeCheckers() {
+        return (((recordTimeCheckers.getMinutes() < 9) ? ("0" + recordTimeCheckers.getMinutes()) : recordTimeCheckers.getMinutes()) + ":" +
+                ((recordTimeCheckers.getSeconds() < 9) ? ("0" + recordTimeCheckers.getSeconds()) : recordTimeCheckers.getSeconds())
+        );
+    }
     
     public void setRecordTimeCheckers(Time newRecordTimeCheckers) {
         if (newRecordTimeCheckers.getMinutes() <= this.getRecordTimeCheckers().getMinutes()) {
@@ -169,6 +175,12 @@ public class Player implements Serializable{
         return averageTimeHanoi;
     }
 
+    public String getStringAverageTimeHanoi() {
+        return (((getAverageTimeHanoi().getMinutes() < 9) ? ("0" + getAverageTimeHanoi().getMinutes()) : getAverageTimeHanoi().getMinutes()) + ":" +
+                ((getAverageTimeHanoi().getSeconds() < 9) ? ("0" + getAverageTimeHanoi().getSeconds()) : getAverageTimeHanoi().getSeconds())
+        );
+    }
+
     public int getTotalMovesHanoi() {
         return totalMovesHanoi;
     }
@@ -179,6 +191,13 @@ public class Player implements Serializable{
 
     public Time getTotalTimeHanoi() {
         return totalTimeHanoi;
+    }
+
+    
+    public String getStringTotalTimeHanoi() {
+        return (((totalTimeHanoi.getMinutes() < 9) ? ("0" + totalTimeHanoi.getMinutes()) : totalTimeHanoi.getMinutes()) + ":" +
+        ((totalTimeHanoi.getSeconds() < 9) ? ("0" + totalTimeHanoi.getSeconds()) : totalTimeHanoi.getSeconds())
+        );
     }
 
     public void sumToTotalTimeHanoi(Time timeToAdd) {

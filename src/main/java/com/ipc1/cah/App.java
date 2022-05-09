@@ -1,7 +1,5 @@
 package com.ipc1.cah;
 
-import com.ipc1.cah.hanoi.HanoiMatch;
-import com.ipc1.cah.players.Player;
 import com.ipc1.cah.ui.MainWindow;
 
 /**
